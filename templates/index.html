@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrusion Detection System Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Link to the custom CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">IDS Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <!-- Theme Toggle Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="theme-toggle">Switch to Dark Mode</a>
+                </li>
+                <!-- Logout Link -->
+                <li class="nav-item">
+                    <form method="POST" action="{{ url_for('logout') }}">
+                        <button type="submit" class="nav-link btn btn-link" style="cursor: pointer;">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <!-- Welcome Message -->
+        <h1>Welcome, {{ user }}!</h1>
+        <p>Monitor a specific IP address for potential intrusions.</p>
+
+        <!-- Form to Input IP Address -->
+        <form method="POST" action="{{ url_for('dashboard') }}">
+            <div class="form-group">
+                <label for="ip_address">Enter IP Address to Monitor:</label>
+                <input type="text" class="form-control" id="ip_address" name="ip_address" value="{{ current_ip }}" placeholder="e.g., 192.168.1.100" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" name="action" value="Start" {% if current_ip %} disabled {% endif %}>Start Monitoring</button>
+                <button type="submit" class="btn btn-danger" name="action" value="Stop" {% if not current_ip %} disabled {% endif %}>Stop Monitoring</button>
+            </div>
+        </form>
+
+        <!-- Display the status if IDS is running or stopped -->
+        {% if current_ip %}
+        <div class="alert alert-info mt-3">
+            <strong>Status:</strong> IDS is monitoring traffic for IP address <strong>{{ current_ip }}</strong>.
+        </div>
+        {% else %}
+        <div class="alert alert-warning mt-3">
+            <strong>Status:</strong> IDS is not monitoring any IP address at the moment.
+        </div>
+        {% endif %}
+
+        <!-- Display Errors (if any) -->
+        {% if error %}
+        <div class="alert alert-danger mt-3">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- Intrusion Alerts Section -->
+        <h3>Detected Intrusions:</h3>
+        <ul class="list-group">
+            {% for alert in alerts %}
+            <li class="list-group-item">{{ alert }}</li>
+            {% else %}
+            <li class="list-group-item">No intrusions detected yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript for theme toggling -->
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+</body>
+</html>
