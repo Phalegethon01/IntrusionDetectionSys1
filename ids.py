@@ -153,6 +153,10 @@
 
 from scapy.all import sniff, IP, TCP, UDP, ICMP, Raw
 from datetime import datetime
+import threading
+
+monitoring_thread = None
+stop_event = threading.Event()
 
 # Example signature patterns (as you provided)
 signatures = [
@@ -180,7 +184,7 @@ def check_for_signatures(packet):
 
     # Handle specific network-based signatures
     if packet.haslayer(TCP):
-        if packet[TCP].flags == "S":  # SYN scan (Port scan)
+        if packet[TCP].flags == "S":  # SYN scan (Porvleat scan)
             alert = f"SYN Scan Detected from {packet[IP].src} to {packet[IP].dst}"
             log_alert(alert)
             print(alert)
@@ -205,8 +209,15 @@ def start_ids(target_ip):
 
 # Function to stop IDS (optional, depending on how you implement it)
 def stop_ids():
-    print("Stopping IDS")
-    # You'll need to implement how to stop the sniffing process gracefully (e.g., with threading control)
+    global monitoring_thread, stop_event
+    if monitoring_thread and monitoring_thread.is_alive():
+        print("Stopping IDS...")  # Log the stop attempt
+        stop_event.set()  # Signal the thread to stop
+        monitoring_thread.join()  # Do not wait for the thread to finish
+        monitoring_thread = None  # Clean up the thread reference
+        print("IDS stop signal sent successfully.")
+    else:
+        print("No IDS is running.")
 
 
 

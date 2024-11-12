@@ -46,7 +46,9 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="action" value="Start" {% if current_ip %} disabled {% endif %}>Start Monitoring</button>
+                <!-- <button type="submit" class="btn btn-danger" name="action" value="Stop" {% if not current_ip %} disabled {% endif %}>Stop Monitoring</button> -->
                 <button type="submit" class="btn btn-danger" name="action" value="Stop" {% if not current_ip %} disabled {% endif %}>Stop Monitoring</button>
+
             </div>
         </form>
 
