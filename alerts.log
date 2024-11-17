@@ -75,3 +75,8 @@
 2024-11-17 09:10:18.132179 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
 2024-11-17 09:10:18.303960 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
 2024-11-17 09:10:18.309959 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 17:14:52.163765 - ICMP Flood Detected from 192.168.1.6 to 142.250.189.174
+2024-11-17 17:15:23.770472 - ICMP Flood Detected from 192.168.1.6 to 142.250.189.174
+2024-11-17 17:16:18.061655 - ICMP Flood Detected from 192.168.1.6 to 142.250.189.174
+2024-11-17 17:17:55.135278 - SYN Scan Detected from 192.168.1.6 to 18.238.192.17
+2024-11-17 17:17:55.809008 - Remote File Inclusion (RFI) Detected from 18.238.192.17 to 192.168.1.6
