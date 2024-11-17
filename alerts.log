@@ -40,3 +40,38 @@
 2024-11-11 20:12:59.693126 - SYN Scan Detected from 192.168.1.8 to 10.0.2.15
 2024-11-11 20:13:03.703323 - SYN Scan Detected from 192.168.1.8 to 10.0.2.15
 2024-11-11 20:13:11.715815 - SYN Scan Detected from 192.168.1.8 to 10.0.2.15
+2024-11-16 18:15:24.803971 - ICMP Flood Detected from 192.168.1.7 to 142.250.189.196
+2024-11-16 18:15:25.829584 - ICMP Flood Detected from 192.168.1.7 to 142.250.189.196
+2024-11-16 18:15:26.852594 - ICMP Flood Detected from 192.168.1.7 to 142.250.189.196
+2024-11-16 18:15:27.873755 - ICMP Flood Detected from 192.168.1.7 to 142.250.189.196
+2024-11-17 08:57:10.969725 - SYN Scan Detected from 192.168.1.7 to 142.250.189.196
+2024-11-17 08:59:49.306022 - SYN Scan Detected from 192.168.1.7 to 31.3.96.40
+2024-11-17 08:59:49.851481 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:49.856488 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:49.860483 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:49.864440 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:49.868436 - Cross-Site Scripting (XSS) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:50.077901 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:50.082917 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:50.131929 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 08:59:50.137914 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.379398 - SYN Scan Detected from 192.168.1.7 to 31.3.96.40
+2024-11-17 09:03:29.909277 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.914271 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.921274 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.926305 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.931262 - Cross-Site Scripting (XSS) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.941265 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:29.946258 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:30.144258 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:03:30.149276 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:17.583352 - SYN Scan Detected from 192.168.1.7 to 31.3.96.40
+2024-11-17 09:10:18.101226 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.106226 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.110195 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.114190 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.119180 - Cross-Site Scripting (XSS) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.127247 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.132179 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.303960 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7
+2024-11-17 09:10:18.309959 - Remote File Inclusion (RFI) Detected from 31.3.96.40 to 192.168.1.7

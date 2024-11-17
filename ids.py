@@ -7,38 +7,9 @@
 
 # # Define the signatures for different types of attacks
 # signatures = [
-#     # Web Application Attacks
-#     {"name": "SQL Injection Attempt", "pattern": "' OR '1'='1"},
-#     {"name": "SQL Injection Using UNION", "pattern": "UNION SELECT"},
-#     {"name": "Blind SQL Injection", "pattern": "SLEEP(5)"},
-#     {"name": "Cross-Site Scripting (XSS)", "pattern": "<script>"},
-#     {"name": "Remote File Inclusion (RFI)", "pattern": "http://"},
-#     {"name": "Local File Inclusion (LFI)", "pattern": "../"},
-#     {"name": "Command Injection", "pattern": "; ls"},
-#     {"name": "Directory Traversal Attack", "pattern": "/etc/passwd"},
-#     {"name": "HTTP Flood (DDoS)", "pattern": "GET / HTTP/1.1"},
-#     {"name": "Slowloris Attack", "pattern": "Connection: keep-alive"},
-#     {"name": "Shellshock Bash Exploit", "pattern": "() { :; };"},
-#     {"name": "Web Shell Detection", "pattern": "cmd=cat /etc/passwd"},
-    
-#     # Network Attacks
-#     {"name": "SSH Brute Force Attack", "pattern": "Failed password for"},
-#     {"name": "FTP Brute Force Attack", "pattern": "530 Login incorrect"},
-#     {"name": "DNS Amplification Attack", "pattern": "ANY"},
-#     {"name": "ARP Spoofing", "pattern": "ARP reply is-at"},
-#     {"name": "SMB Relay Attack", "pattern": "NTLMSSP"},
-#     {"name": "ICMP Flood (Ping of Death)", "pattern": "Type 8 Code 0"},
-#     {"name": "SYN Flood", "pattern": "SYN"},
-#     {"name": "UDP Flood", "pattern": "UDP"},
-#     {"name": "TCP FIN Scan", "pattern": "FIN"},
-#     {"name": "TCP Xmas Scan", "pattern": "FIN, PSH, URG"},
-#     {"name": "TCP Null Scan", "pattern": "NULL"},
-#     {"name": "DNS Tunneling", "pattern": "TXT"},
-#     {"name": "IPv6 Routing Header Attack", "pattern": "Routing Header"},
-#     {"name": "IP Fragmentation Attack", "pattern": "IP fragments"},
-#     {"name": "Port Scan", "pattern": "SYN to multiple ports"},
-#     {"name": "Tor Exit Node Traffic", "pattern": "User-Agent: Tor"},
-    
+#     
+
+
 #     # Malware and Exploits
 #     {"name": "Heartbleed Exploit", "pattern": "heartbeat_request"},
 #     {"name": "EternalBlue Exploit", "pattern": "SMBv1"},
@@ -160,9 +131,38 @@ stop_event = threading.Event()
 
 # Example signature patterns (as you provided)
 signatures = [
+    # Web Application Attacks
     {"name": "SQL Injection Attempt", "pattern": "' OR '1'='1"},
     {"name": "SQL Injection Using UNION", "pattern": "UNION SELECT"},
     {"name": "Cross-Site Scripting (XSS)", "pattern": "<script>"},
+    {"name": "Blind SQL Injection", "pattern": "SLEEP(5)"},
+    {"name": "Remote File Inclusion (RFI)", "pattern": "http://"},
+    {"name": "Local File Inclusion (LFI)", "pattern": "../"},
+    {"name": "Command Injection", "pattern": "; ls"},
+    {"name": "Directory Traversal Attack", "pattern": "/etc/passwd"},
+    {"name": "HTTP Flood (DDoS)", "pattern": "GET / HTTP/1.1"},
+    {"name": "Slowloris Attack", "pattern": "Connection: keep-alive"},
+    {"name": "Shellshock Bash Exploit", "pattern": "() { :; };"},
+    {"name": "Web Shell Detection", "pattern": "cmd=cat /etc/passwd"},
+    
+    # Network Attacks
+    {"name": "SSH Brute Force Attack", "pattern": "Failed password for"},
+    {"name": "FTP Brute Force Attack", "pattern": "530 Login incorrect"},
+    {"name": "DNS Amplification Attack", "pattern": "ANY"},
+    {"name": "ARP Spoofing", "pattern": "ARP reply is-at"},
+    {"name": "SMB Relay Attack", "pattern": "NTLMSSP"},
+    {"name": "ICMP Flood (Ping of Death)", "pattern": "Type 8 Code 0"},
+    {"name": "SYN Flood", "pattern": "SYN"},
+    {"name": "UDP Flood", "pattern": "UDP"},
+    {"name": "TCP FIN Scan", "pattern": "FIN"},
+    {"name": "TCP Xmas Scan", "pattern": "FIN, PSH, URG"},
+    {"name": "TCP Null Scan", "pattern": "NULL"},
+    {"name": "DNS Tunneling", "pattern": "TXT"},
+    {"name": "IPv6 Routing Header Attack", "pattern": "Routing Header"},
+    {"name": "IP Fragmentation Attack", "pattern": "IP fragments"},
+    {"name": "Port Scan", "pattern": "SYN to multiple ports"},
+    {"name": "Tor Exit Node Traffic", "pattern": "User-Agent: Tor"},
+    
     
 ]
 
@@ -196,6 +196,31 @@ def check_for_signatures(packet):
             print(alert)
 
     # Add more checks for your other network attack signatures...
+            # Detect Null Scan (no flags set)
+            # Detect TCP Xmas Scan (FIN, PSH, URG flags set)
+    if packet[TCP].flags == 'FPU':
+        alert = f"TCP Xmas Scan Detected from {packet[IP].src} to {packet[IP].dst}"
+        log_alert(alert)
+        print(alert)
+
+
+    if packet[TCP].flags == 0:
+        alert = f"TCP Null Scan Detected from {packet[IP].src} to {packet[IP].dst}"
+        log_alert(alert)
+        print(alert)
+
+    if packet.haslayer(UDP) and packet.haslayer(Raw):
+        if b"ANY" in packet[Raw].load:
+            alert = f"DNS Amplification Attack Detected from {packet[IP].src} to {packet[IP].dst}"
+            log_alert(alert)
+            print(alert)
+
+    # Detect ARP Spoofing
+    if packet.haslayer('ARP') and packet.op == 2:  # ARP reply
+        alert = f"ARP Spoofing Detected from {packet[IP].src} to {packet[IP].dst}"
+        log_alert(alert)
+        print(alert)
+
 
 # Function to capture packets on the network
 def packet_callback(packet):
@@ -203,19 +228,43 @@ def packet_callback(packet):
         check_for_signatures(packet)
 
 # Function to start IDS monitoring on a specified IP address
-def start_ids(target_ip):
-    print(f"Starting IDS for IP: {target_ip}")
-    sniff(filter=f"ip host {target_ip}", prn=packet_callback, store=0)
+# def start_ids(target_ip):
+#     print(f"Starting IDS for IP: {target_ip}")
+#     sniff(filter=f"ip host {target_ip}", prn=packet_callback, store=0)
 
-# Function to stop IDS (optional, depending on how you implement it)
+# # Function to stop IDS (optional, depending on how you implement it)
+# def stop_ids():
+#     global monitoring_thread, stop_event
+#     if monitoring_thread and monitoring_thread.is_alive():
+#         print("Stopping IDS...")  # Log the stop attempt
+#         stop_event.set()  # Signal the thread to stop
+#         # monitoring_thread.join()  # Do not wait for the thread to finish
+#         monitoring_thread = None  # Clean up the thread reference
+#         print("IDS stop signal sent successfully.")
+#     else:
+#         print("No IDS is running.")
+
+
+
+def start_ids(target_ip):
+    global monitoring_thread, stop_event
+    stop_event.clear()  # Reset the stop event
+    print(f"Starting IDS for IP: {target_ip}")
+    monitoring_thread = threading.Thread(target=sniff_packets, args=(target_ip,))
+    monitoring_thread.start()
+
+def sniff_packets(target_ip):
+    sniff(filter=f"ip host {target_ip}", prn=packet_callback, store=0, stop_filter=lambda x: stop_event.is_set())
+
+# Function to stop IDS monitoring
 def stop_ids():
     global monitoring_thread, stop_event
     if monitoring_thread and monitoring_thread.is_alive():
-        print("Stopping IDS...")  # Log the stop attempt
+        print("Stopping IDS...")
         stop_event.set()  # Signal the thread to stop
-        monitoring_thread.join()  # Do not wait for the thread to finish
+        monitoring_thread.join()  # Wait for the thread to finish
         monitoring_thread = None  # Clean up the thread reference
-        print("IDS stop signal sent successfully.")
+        print("IDS stopped successfully.")
     else:
         print("No IDS is running.")
 
