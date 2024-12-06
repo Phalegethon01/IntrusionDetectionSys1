@@ -220,15 +220,16 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Database Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost/flask_auth'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Database Model for Users
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
-    password_hash = db.Column(db.String(150), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
 
 # Create the database and tables
 with app.app_context():
@@ -331,3 +332,8 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+#Admin:admin12345
+#upamanyu:12345
+#vinit:vinit123
